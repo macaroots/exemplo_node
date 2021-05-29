@@ -9,6 +9,17 @@ class CrudController {
         this.update = this.update.bind(this);
         this.delete = this.delete.bind(this);
     }
+    getRouter() {
+        const express = require('express')
+        const router = express.Router()
+
+        router.get('/', this.list);
+        router.post('/', this.insert);
+        router.get('/:id', this.findById);
+        router.put('/:id', this.update);
+        router.delete('/:id', this.delete);
+        return router;
+    }
     list(req, res) {
         this.dao.list(function(err, pessoas) {
             if (err)
