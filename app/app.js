@@ -1,6 +1,6 @@
 
 let options = {
-    hostname: '127.0.0.1',
+    hostname: '0.0.0.0',
     port: 3000,
     dir: 'public'
 };
@@ -18,7 +18,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 // Rotas
-app.get('/', (req, res) => {
+app.get('/oi', (req, res) => {
     res.send('Oi do node');
 });
 
