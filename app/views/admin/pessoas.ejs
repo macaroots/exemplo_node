@@ -4,65 +4,89 @@
     <!--Visão-->
 	<meta charset="UTF-8"/>
 	<title>Agenda</title>
-	<!--script src="_js/soma.js"></script-->
+	<style>
+	label, span {
+        display: block;
+        font-weight: bold;
+    }
+	</style>
 </head>
 <body>
     <%- include('../header.ejs') %>
 	<main>
-		<form onsubmit="inserir(); return false" id="form_soma" method="post">
-			<div class="row">
-				<div class="form-group col-lg-4">
-					<label for="nome"> <b>Nome:</b> </label> <p> 
-					<input id="nome" type="text" name="nome" placeholder="Insira seu nome">
-				</div> <p>
-				<label for="telefone"> <b>Telefone:</b> </label> <p> 
-				<input id="telefone" type="int" name="telefone" placeholder="Insira seu telefone"> <p> 
-				<button type="submit" value="Enviar">Enviar</button> <p> 
-			</div>
+        <div id="resultado"></div>
+		<form onsubmit="event.preventDefault(); inserir(); return false" id="form_soma">
+            <input type="hidden" id="id" value="" />
+            <label>
+                <span>Nome:</span>  
+                <input id="nome" type="text" name="nome" placeholder="Insira seu nome">
+            </label>
+            <label>
+                <span>Telefone:</span>
+                <input id="telefone" type="int" name="telefone" placeholder="Insira seu telefone">
+            </label>  
+            <button type="submit">Enviar</button>
+            <button type="reset" onclick="document.querySelector('#id').value='';">Limpar</button>
 		</form>
-			<button onclick="listar()">Listar</button>
-			<table style="display: none;">
-				<tr> 
-					<th>Nome</th>
-					<th>Telefone</th>
-				</tr> 
-				<tbody id="resultado"></tbody>
-			</table>
+        <button onclick="listar()">Listar</button>
+        <table style="display: none;">
+            <tr> 
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr> 
+            <tbody id="lista"></tbody>
+        </table>
 	</main>
 	<script>
-		function listar() {
-			var resultado = document.getElementById('resultado');
+        const url = '/api/v1/pessoas/';
+		async function listar() {
+			let resultado = document.querySelector('#lista');
 			resultado.parentElement.style.display = 'block';
-			resultado.innerHTML = "Carregando...";
-			fetch('/api/v1/pessoas').then(async function (pessoas) {
-				resultado.innerHTML = "";
-				for (var pessoa of await pessoas.json()) {
-					var linha = "<tr>";
-					linha += "	<td>" + pessoa.nome + "</td>"; 
-					linha += "	<td>" + pessoa.telefone + "</td>"; 
-					linha += "</tr>";
-					resultado.innerHTML += linha;
-				}
-			});
+			resultado.innerHTML = 'Carregando...';
+			let resposta = await fetch(url);
+            resultado.innerHTML = '';
+            for (let pessoa of await resposta.json()) {
+                let linha = '<tr>';
+                linha += '	<td>' + pessoa.nome + '</td>'; 
+                linha += '	<td>' + pessoa.telefone + '</td>'; 
+                linha += '	<td><button onclick="formEditar(' + pessoa.id + ');">Editar</button><button onclick="apagar(' + pessoa.id + ');">Apagar</button></td>'; 
+                linha += '</tr>';
+                resultado.innerHTML += linha;
+            }
 		}
-		function inserir() {
+		async function inserir() {
+            let id = document.querySelector('#id').value;
 			const pessoa = {
-				nome: document.getElementById('nome').value,
-				telefone: document.getElementById('telefone').value
+				nome: document.querySelector('#nome').value,
+				telefone: document.querySelector('#telefone').value
 			};
-			fetch('/api/v1/pessoas', {
-				method: 'POST',
+			let resposta = await fetch(url + id, {
+				method: (id == '') ? 'POST' : 'PUT',
 				headers: {
 					'Content-Type': 'application/json'
 				},
 				body: JSON.stringify(pessoa)
-			}).then(async function (pessoa) {
-				var resultado = document.getElementById('resultado');
-				resultado.innerHTML = pessoa;
-				
-				window.x=pessoa;
 			});
+            let resultado = document.querySelector('#resultado');
+            resultado.innerHTML = await resposta.text();
+            listar();
+        }
+		async function apagar(id) {
+            let resposta = await fetch(url + id, {
+				method: 'DELETE'
+			});
+            let resultado = document.querySelector('#resultado');
+            resultado.innerHTML = await resposta.text()
+            listar();
 		}
+		async function formEditar(id) {
+			let resposta = await fetch(url + id);
+            let bean = await resposta.json();
+            document.querySelector('#nome').value = bean.nome;
+            document.querySelector('#telefone').value = bean.telefone;
+            document.querySelector('#id').value = id;
+        }
 	</script>
 </body>
 </html>
