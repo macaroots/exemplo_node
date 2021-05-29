@@ -13,7 +13,6 @@ const DAOPessoas = function(connection){
                     result(err, null);
                 }
                 else{
-                    console.log(res.insertId);
                     result(null, res.insertId);
                 }
                 c.release();
@@ -41,7 +40,6 @@ const DAOPessoas = function(connection){
                     result(null, err);
                 }
                 else{
-                    console.log('pessoas : ', res);
                     result(null, res);
                 }
             });
