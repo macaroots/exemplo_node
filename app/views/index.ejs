@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LEA - Live Environment for Agents</title>
+	<meta charset="utf-8" />
+</head>
+<body>
+    <%- include('header.ejs') %>
+<% for (let { nome, telefone } of pessoas) { %>
+    <div>
+        <span><%=nome%></span>
+        <span><%=telefone%></span>
+    </div>
+<% } %>
+</body>
+</html>

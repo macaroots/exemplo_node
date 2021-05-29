@@ -4,10 +4,8 @@ const DAOPessoas = require('../lib/DAOPessoas');
 const dao = new DAOPessoas(fabricaMysql);
 exports.findAll = function(req, res) {
     dao.findAll(function(err, pessoas) {
-        console.log('controle')
         if (err)
             res.send(err);
-        console.log('res', pessoas);
         res.send(pessoas);
     });
 };
