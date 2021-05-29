@@ -1,7 +1,7 @@
 'use strict';
-var dbConn = require('../config/db.config');
-const Pessoas = require('../lib/pessoas');
-const dao = new Pessoas(dbConn);
+const fabricaMysql = require('../config/db.config');
+const DAOPessoas = require('../lib/DAOPessoas');
+const dao = new DAOPessoas(fabricaMysql);
 exports.findAll = function(req, res) {
     dao.findAll(function(err, pessoas) {
         console.log('controle')

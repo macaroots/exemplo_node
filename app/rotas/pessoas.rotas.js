@@ -1,6 +1,6 @@
 const express = require('express')
 const router = express.Router()
-const pessoasControle =   require('../controle/pessoas.controle');
+const pessoasControle = require('../controle/pessoas.controle');
 
 router.get('/', pessoasControle.findAll);
 router.post('/', pessoasControle.create);

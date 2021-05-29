@@ -22,9 +22,9 @@ app.get('/', (req, res) => {
     res.send('Oi do node');
 });
 
-const pessoasRotas = require ('./rotas/pessoas.rotas.js')
+const pessoasRotas = require('./rotas/pessoas.rotas.js');
 // usando como middleware
-app.use ('/api/v1/pessoas', pessoasRotas)
+app.use('/api/v1/pessoas', pessoasRotas);
 
 app.listen(options.port, options.hostname, () => {
     console.log(`Server running at http://${options.hostname}:${options.port}/`);
