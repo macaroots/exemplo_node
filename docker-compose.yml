@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  node:
+    build: .
+    env_file: .env
+    environment:
+      - MYSQL_HOST=db
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./app:/home/node/app
+      - node_modules:/home/node/app/node_modules
+    links:
+      - db
+    depends_on:
+      - db
+
+  db:
+    image: mysql:8
+    command: --default-authentication-plugin=mysql_native_password
+    env_file: .env
+    environment:
+      - MYSQL_HOST=db
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./agenda.sql:/docker-entrypoint-initdb.d/dump.sql
+
+volumes:
+  node_modules:
+  db_data:

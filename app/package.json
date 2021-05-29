@@ -1,0 +1,27 @@
+{
+  "name": "exemplo_node",
+  "version": "1.0.0",
+  "description": "Exemplo Node.js",
+  "main": "app.js",
+  "scripts": {
+    "test": "mocha",
+    "start": "node app.js"
+  },
+  "keywords": [
+    "Exemplo"
+  ],
+  "author": "Renato Lenz Costalima",
+  "license": "Apache-2.0",
+  "devDependencies": {
+    "mocha": "^8.1.3"
+  },
+  "dependencies": {
+    "ejs": "^3.1.5",
+    "express": "^4.17.1",
+    "google-auth-library": "^6.1.3",
+    "https": "^1.0.0",
+    "mysql": "^2.18.1",
+    "requirejs": "^2.3.6",
+    "socket.io": "^2.3.0"
+  }
+}
