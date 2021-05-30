@@ -3,14 +3,17 @@
 <head>
 	<title>LEA - Live Environment for Agents</title>
 	<meta charset="utf-8" />
+	<link rel="stylesheet" href="/_css/estilo.css" />
 </head>
 <body>
     <%- include('header.ejs') %>
+    <div class="lista">
 <% for (let { nome, telefone } of pessoas) { %>
-    <div>
-        <span><%=nome%></span>
-        <span><%=telefone%></span>
-    </div>
+		<div class="card">
+			<span><%=nome%></span>
+			<span><%=telefone%></span>
+		</div>
 <% } %>
+    </div>
 </body>
 </html>
