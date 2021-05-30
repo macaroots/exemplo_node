@@ -43,12 +43,88 @@
     </script>
 </head>
 <body>
+    <%- include('../header.ejs') %>
     <div id="map"></div>
     <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
     <script
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSMExfJcr6vKV9HK9pq_IyEHMKXKa8PbM&callback=initMap"
+      src="https://maps.googleapis.com/maps/api/js?key=<%=key%>&callback=initMap"
       async
     ></script>
     
+	<main>
+        <div id="resultado"></div>
+		<form onsubmit="event.preventDefault(); inserir(); return false" id="form_soma">
+            <input type="hidden" id="id" value="" />
+            <label>
+                <span>Nome:</span>  
+                <input id="nome" type="text" name="nome" placeholder="Insira seu nome">
+            </label>
+            <label>
+                <span>Telefone:</span>
+                <input id="telefone" type="int" name="telefone" placeholder="Insira seu telefone">
+            </label>  
+            <button type="submit">Enviar</button>
+            <button type="reset" onclick="document.querySelector('#id').value='';">Limpar</button>
+		</form>
+        <button onclick="listar()">Listar</button>
+        <table style="display: none;">
+            <tr> 
+                <th>Nome</th>
+                <th>Telefone</th>
+                <th>Ações</th>
+            </tr> 
+            <tbody id="lista"></tbody>
+        </table>
+	</main>
+	<script>
+        const url = '/api/v1/pessoas/';
+		async function listar() {
+			let resultado = document.querySelector('#lista');
+			resultado.parentElement.style.display = 'block';
+			resultado.innerHTML = 'Carregando...';
+			let resposta = await fetch(url);
+            resultado.innerHTML = '';
+            for (let pessoa of await resposta.json()) {
+                let linha = '<tr>';
+                linha += '	<td>' + pessoa.nome + '</td>'; 
+                linha += '	<td>' + pessoa.telefone + '</td>'; 
+                linha += '	<td><button onclick="formEditar(' + pessoa.id + ');">Editar</button><button onclick="apagar(' + pessoa.id + ');">Apagar</button></td>'; 
+                linha += '</tr>';
+                resultado.innerHTML += linha;
+            }
+		}
+		async function inserir() {
+            let id = document.querySelector('#id').value;
+			const pessoa = {
+				nome: document.querySelector('#nome').value,
+				telefone: document.querySelector('#telefone').value
+			};
+			let resposta = await fetch(url + id, {
+				method: (id == '') ? 'POST' : 'PUT',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(pessoa)
+			});
+            let resultado = document.querySelector('#resultado');
+            resultado.innerHTML = await resposta.text();
+            listar();
+        }
+		async function apagar(id) {
+            let resposta = await fetch(url + id, {
+				method: 'DELETE'
+			});
+            let resultado = document.querySelector('#resultado');
+            resultado.innerHTML = await resposta.text()
+            listar();
+		}
+		async function formEditar(id) {
+			let resposta = await fetch(url + id);
+            let bean = await resposta.json();
+            document.querySelector('#nome').value = bean.nome;
+            document.querySelector('#telefone').value = bean.telefone;
+            document.querySelector('#id').value = id;
+        }
+	</script>
 </body>
 </html>

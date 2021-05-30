@@ -13,7 +13,8 @@ exports.adminPessoas = function(req, res) {
     res.render('admin/pessoas.ejs');
 };
 exports.mapa = function(req, res) {
-    res.render('mapa.ejs');
+    let key = process.env.API_KEY;
+    res.render('mapa.ejs', {key: key});
 };
 exports.buscar = function(req, res) {
     const nome = req.body.nome;
