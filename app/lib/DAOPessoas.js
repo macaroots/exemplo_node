@@ -1,17 +1,8 @@
 const DAO = require('./DAO.js');
 
 class DAOPessoas extends DAO {
-    getSqlInsert() {
-        return 'INSERT INTO pessoas set ?';
-    }
-    getSqlList() {
-        return 'SELECT * FROM pessoas';
-    }
-    getSqlUpdate() {
-        return 'UPDATE pessoas SET ? WHERE id = ?';
-    }
-    getSqlDelete() {
-        return 'DELETE FROM pessoas WHERE id = ?';
+    constructor(connection, tableName='pessoas') {
+        super(connection, tableName);
     }
     valida(bean) {
         if (bean.nome == '') {

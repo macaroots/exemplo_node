@@ -1,6 +1,7 @@
 'use strict';
 
 class CrudController {
+    dao;
     constructor(dao) {
         this.dao = dao;
         this.list = this.list.bind(this);

@@ -24,10 +24,12 @@ app.get('/oi', (req, res) => {
 });
 
 const rotasIniciais = require('./rotas/iniciais.rotas.js');
-const rotasPessoas = require('./rotas/pessoas.rotas.js');
+const rotasPessoas = require('./controle/pessoas.controle.js').getRouter();
+const rotasPontos = require('./controle/pontos.controle.js').getRouter();
 // usando como middleware
 app.use('/', rotasIniciais);
 app.use('/api/v1/pessoas', rotasPessoas);
+app.use('/api/v1/pontos', rotasPontos);
 
 app.listen(options.port, options.hostname, () => {
     console.log(`Server running at http://${options.hostname}:${options.port}/`);

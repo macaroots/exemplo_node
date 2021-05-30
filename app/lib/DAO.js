@@ -3,11 +3,26 @@ const mysql = require('mysql');
 'use strict';
 
 class DAO {
-    constructor(connection) {
+    connect;
+    tableName;
+    constructor(connection, tableName='table_name') {
         this.connect = connection.connect;
+        this.tableName = tableName;
     }
 
     valida(bean) {
+    }
+    getSqlInsert() {
+        return 'INSERT INTO ' + this.tableName + ' set ?';
+    }
+    getSqlList() {
+        return 'SELECT * FROM ' + this.tableName;
+    }
+    getSqlUpdate() {
+        return 'UPDATE ' + this.tableName + ' SET ? WHERE id = ?';
+    }
+    getSqlDelete() {
+        return 'DELETE FROM ' + this.tableName + ' WHERE id = ?';
     }
     insert(bean, result) {
         this.valida(bean);

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>LEA - Live Environment for Agents</title>
+	<meta charset="utf-8" />
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <style type="text/css">
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 50%;
+      }
+
+      /* Optional: Makes the sample page fill the window. */
+      html,
+      body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+    <script>
+    let map;
+
+    function initMap() {
+        map = new google.maps.Map(document.getElementById("map"), {
+            center: { lat: -3.650958520411694, lng: -39.0146470430677 },
+            zoom: 8,
+        });
+    }
+    
+    function placeMarker(position, map) {
+        var marker = new google.maps.Marker({
+            position: position,
+            map: map
+        });
+        map.panTo(position);
+    }
+    google.maps.event.addListener(map, 'click', function(e) {
+        alert(e.latLng);
+        placeMarker(e.latLng, map);
+    });
+    </script>
+</head>
+<body>
+    <div id="map"></div>
+    <!-- Async script executes immediately and must be after any DOM elements used in callback. -->
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSMExfJcr6vKV9HK9pq_IyEHMKXKa8PbM&callback=initMap"
+      async
+    ></script>
+    
+</body>
+</html>
