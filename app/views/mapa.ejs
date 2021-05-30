@@ -20,25 +20,38 @@
     </style>
     <script>
     let map;
+    window.ponto = null;
 
     function initMap() {
         map = new google.maps.Map(document.getElementById("map"), {
             center: { lat: -3.650958520411694, lng: -39.0146470430677 },
             zoom: 8,
         });
+        
+        google.maps.event.addListener(map, 'click', onClick);
     }
     
+    function onClick(e) {
+        onDrag(e);
+        placeMarker(e.latLng, map);
+    }
+    function onDrag(e) {
+        document.querySelector('#lat').value = e.latLng.lat();
+        document.querySelector('#lng').value = e.latLng.lng();
+    }
     function placeMarker(position, map) {
+        if (window.ponto != null) {
+            window.ponto.setMap(null);
+        }
         var marker = new google.maps.Marker({
             position: position,
-            map: map
+            map: map,
+            draggable:true
         });
+        marker.addListener('dragend', onDrag);
         map.panTo(position);
+        window.ponto = marker;
     }
-    google.maps.event.addListener(map, 'click', function(e) {
-        alert(e.latLng);
-        placeMarker(e.latLng, map);
-    });
     </script>
 </head>
 <body>
@@ -56,11 +69,11 @@
             <input type="hidden" id="id" value="" />
             <label>
                 <span>Latitude:</span>  
-                <input id="lat" type="text" name="lat" placeholder="Insira seu lat">
+                <input id="lat" type="text" name="lat" placeholder="Insira a latitude">
             </label>
             <label>
                 <span>Longitude:</span>
-                <input id="lng" type="int" name="lng" placeholder="Insira seu lng">
+                <input id="lng" type="int" name="lng" placeholder="Insira a longitude">
             </label>  
             <button type="submit">Enviar</button>
             <button type="reset" onclick="document.querySelector('#id').value='';">Limpar</button>
