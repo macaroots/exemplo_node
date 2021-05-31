@@ -24,7 +24,7 @@ services:
       - MYSQL_HOST=db
     volumes:
       - db_data:/var/lib/mysql
-      - ./agenda.sql:/docker-entrypoint-initdb.d/dump.sql
+      - ./mapa.sql:/docker-entrypoint-initdb.d/dump.sql
 
 volumes:
   node_modules:
