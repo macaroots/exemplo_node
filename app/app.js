@@ -22,11 +22,10 @@ app.use(bodyParser.json())
 app.get('/oi', (req, res) => {
     res.render('index.ejs', {msg: 'oi ejs'});
 });
-
 const rotasIniciais = require('./rotas/iniciais.rotas.js');
 const rotasPessoas = require('./controle/pessoas.controle.js').getRouter();
 const rotasPontos = require('./controle/pontos.controle.js').getRouter();
-// usando como middleware
+// adicionando rotas como middleware
 app.use('/', rotasIniciais);
 app.use('/api/v1/pessoas', rotasPessoas);
 app.use('/api/v1/pontos', rotasPontos);
