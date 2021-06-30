@@ -20,7 +20,7 @@ app.use(bodyParser.json())
 
 // Rotas
 app.get('/oi', (req, res) => {
-    res.render('index.ejs', {msg: 'oi ejs'});
+    res.render('index.ejs', {msg: 'oi ejs', pessoas: []});
 });
 const rotasIniciais = require('./rotas/iniciais.rotas.js');
 const rotasPessoas = require('./controle/pessoas.controle.js').getRouter();
